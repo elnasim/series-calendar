@@ -39,14 +39,19 @@ class Calendar {
     return [6, 0, 1, 2, 3, 4, 5][startDay];
   }
 
-  public static calenarGenerate(month: number, year: number): TCalendar {
+  public static calenarGenerate(generateDate: Date | null | string): TCalendar {
+    if (generateDate === null) {
+      return null;
+    }
     const res: TCalendar = [];
-    const date = new Date(year, month);
+    const date = new Date(generateDate);
+    const month = date.getMonth();
+    const year = date.getFullYear();
     const weeksInMonth =
       (this.daysInMonth(month, year) + this.daysOffset(date)) / 7;
     let iterableDay = 1;
 
-    for (let week = 0; week < weeksInMonth; week++) {
+    for (let week = 0; week < 6; week++) {
       res[week] = [];
 
       for (let day = 0; day < 7; day++) {
@@ -63,7 +68,7 @@ class Calendar {
                 {
                   id: 1,
                   title: "название",
-                  img: "https://appleinsider.ru/wp-content/uploads/2020/11/google_photos_service_limit.jpg",
+                  img: "https://upload.wikimedia.org/wikipedia/commons/thumb/c/c1/Google_Homepage.svg/640px-Google_Homepage.svg.png",
                 },
               ],
             };

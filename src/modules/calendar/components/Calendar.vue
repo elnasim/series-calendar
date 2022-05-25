@@ -3,12 +3,12 @@
     <CalendarControl
       :month="month"
       :year="year"
-      @nextMonth="nextMonth"
-      @prevMonth="prevMonth"
+      @nextMonth="calendarStore.setNextMonth"
+      @prevMonth="calendarStore.setPrevMonth"
     />
 
-    <table style="width: 100%">
-      <thead>
+    <table class="calendar-table">
+      <thead class="calendar-table__head">
         <tr>
           <th>ПН</th>
           <th>ВТ</th>
@@ -33,31 +33,29 @@
 </template>
 
 <script lang="ts" setup>
-import { reactive, ref, onMounted, computed } from "vue";
-import type { Ref } from "vue";
+import { computed } from "vue";
 import CalendarCell from "./CalendarCell.vue";
-import { TCalendar } from "@/modules/calendar/interfaces";
 import Calendar from "@/modules/calendar/helpers/Calendar";
 import CalendarControl from "./CalendarControl.vue";
+import { useCalendarStore } from "../store/Calendar";
+import { storeToRefs } from "pinia";
 
-const year = ref(2022);
-const month = ref(4);
+const calendarStore = useCalendarStore();
+const { changedDate } = storeToRefs(calendarStore);
 
 const calendar = computed(() => {
-  return Calendar.calenarGenerate(month.value, year.value);
+  return Calendar.calenarGenerate(changedDate.value);
 });
 
-const nextMonth = () => {
-  const date = new Date(year.value, month.value + 1);
-  month.value = date.getMonth();
-  year.value = date.getFullYear();
-};
+const month = computed((): number => {
+  const date = new Date(changedDate.value);
+  return date.getMonth();
+});
 
-const prevMonth = () => {
-  const date = new Date(year.value, month.value - 1);
-  month.value = date.getMonth();
-  year.value = date.getFullYear();
-};
+const year = computed((): number => {
+  const date = new Date(changedDate.value);
+  return date.getFullYear();
+});
 </script>
 
 <style scoped lang="scss">
@@ -69,8 +67,13 @@ const prevMonth = () => {
   margin: 0 auto;
 }
 
-.calendar__row {
-  display: flex;
+.calendar-table {
   width: 100%;
+  border-collapse: collapse;
+}
+
+.calendar-table__head {
+  height: 50px;
+  color: #d1d1d1;
 }
 </style>

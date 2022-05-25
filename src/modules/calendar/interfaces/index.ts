@@ -1,4 +1,4 @@
-export type TCalendar = Array<Array<TDay>>;
+export type TCalendar = Array<Array<TDay>> | null;
 
 export type TDay = IDay | null;
 

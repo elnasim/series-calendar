@@ -41,12 +41,15 @@ const cellsSize = () => {
 .calendar-cell {
   width: 100%;
   height: 100px;
+  padding: 2px;
 }
 
 .calendar-cell__inner {
-  border: 1px solid black;
   height: 100%;
   position: relative;
+  background-color: var(--color-2);
+  border-radius: 20px;
+  overflow: hidden;
 }
 
 .calendar-cell__date-number {
@@ -55,18 +58,19 @@ const cellsSize = () => {
   left: 5px;
   width: 20px;
   height: 20px;
-  background-color: #000;
-  color: #fff;
+  background-color: var(--color-1);
+  color: var(--color-4);
   border-radius: 100%;
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 10px;
+  font-size: 12px;
+  font-weight: bold;
 }
 
 .calendar-cell__content {
   height: 100%;
-  display: flex;
+  position: relative;
 }
 
 .calendar-cell__movie {
@@ -80,8 +84,22 @@ const cellsSize = () => {
 }
 
 .movie-title {
-  background-color: #fff;
-  padding: 3px;
-  border-radius: 4px;
+  // white-space: nowrap;
+  // overflow: hidden;
+  // text-overflow: ellipsis;
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  display: flex;
+  align-items: flex-end;
+  background: linear-gradient(
+    0deg,
+    rgba(34, 34, 59, 1) 0%,
+    rgba(0, 212, 255, 0) 100%
+  );
+  color: var(--color-4);
+  padding: 4px 2px;
 }
 </style>
