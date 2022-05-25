@@ -1,30 +1,19 @@
 export const seriesData = [
   {
     title: "title",
-    date: "01012022",
+    img: "",
+    type: "series",
+    series: [
+      {
+        title: "series title",
+        date: "",
+      },
+    ],
   },
   {
     title: "title",
-    date: "01012022",
-  },
-  {
-    title: "title",
-    date: "01012022",
-  },
-  {
-    title: "title",
-    date: "01012022",
-  },
-  {
-    title: "title",
-    date: "01012022",
-  },
-  {
-    title: "title",
-    date: "01012022",
-  },
-  {
-    title: "title",
-    date: "01012022",
+    img: "",
+    type: "movie",
+    date: "timestamp",
   },
 ];
