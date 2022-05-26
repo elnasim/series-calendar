@@ -38,11 +38,11 @@ class Calendar {
 
   public getDaysOffset(date: Date): number {
     const startDay = date.getDay();
-    console.log("-->", startDay);
     return [6, 0, 1, 2, 3, 4, 5][startDay];
   }
 
   public calendarGenerate(date: Date) {
+    date.setDate(1);
     const month = date.getMonth();
     const year = date.getFullYear();
     let iterableDay = 1;
