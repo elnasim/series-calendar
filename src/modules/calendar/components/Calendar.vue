@@ -1,5 +1,5 @@
 <template>
-  <div class="calendar" v-if="calendar">
+  <div class="calendar" v-if="calendarData">
     <CalendarControl
       :month="month"
       :year="year"
@@ -20,7 +20,7 @@
         </tr>
       </thead>
       <tbody>
-        <tr v-for="(week, index) of calendar" :key="index">
+        <tr v-for="(week, index) of calendarData" :key="index">
           <CalendarCell
             v-for="(day, index) of week"
             :key="index"
@@ -35,7 +35,7 @@
 <script lang="ts" setup>
 import { computed } from "vue";
 import CalendarCell from "./CalendarCell.vue";
-import Calendar from "@/modules/calendar/helpers/Calendar";
+import calendar from "@/modules/calendar/helpers/Calendar";
 import CalendarControl from "./CalendarControl.vue";
 import { useCalendarStore } from "../store/Calendar";
 import { storeToRefs } from "pinia";
@@ -43,8 +43,8 @@ import { storeToRefs } from "pinia";
 const calendarStore = useCalendarStore();
 const { changedDate } = storeToRefs(calendarStore);
 
-const calendar = computed(() => {
-  return Calendar.calenarGenerate(changedDate.value);
+const calendarData = computed(() => {
+  return calendar.getCalendar(changedDate.value);
 });
 
 const month = computed((): number => {

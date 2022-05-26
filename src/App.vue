@@ -13,6 +13,8 @@ import { useCalendarStore } from "@/modules/calendar/store/Calendar";
 const calendarStore = useCalendarStore();
 
 onMounted(() => {
+  // TODO Проверить, почему не устанавливается верный календарь при перезагрузке
+
   calendarStore.setCurrentUserDate();
 });
 </script>
