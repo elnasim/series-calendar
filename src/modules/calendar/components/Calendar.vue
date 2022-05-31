@@ -33,7 +33,7 @@
 </template>
 
 <script lang="ts" setup>
-import { computed, onMounted, ref, watch } from "vue";
+import { computed, onMounted, ref, watch, onBeforeUnmount } from "vue";
 import CalendarCell from "./CalendarCell.vue";
 import calendar from "@/modules/calendar/helpers/Calendar";
 import CalendarControl from "./CalendarControl.vue";
@@ -71,6 +71,7 @@ onMounted(async () => {
 });
 
 watch(month, async () => {
+  serialsData.value = [];
   await fetchCalendarData();
 });
 
