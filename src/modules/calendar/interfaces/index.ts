@@ -4,7 +4,7 @@ export type TDay = IDay | null;
 
 export interface IDay {
   dayInfo: IDayInfo;
-  content: Array<IContentItem>;
+  content: Array<ISerialEpisodeWithSerialInfo>;
 }
 
 export interface IDayInfo {
@@ -27,6 +27,20 @@ export interface ISerial {
 export interface ISerialEpisode {
   id: number;
   title: string;
+  day: number;
   month: string;
-  year: string;
+  year: number;
+}
+
+export interface ISerialEpisodeWithSerialInfo {
+  id: number;
+  title: string;
+  day: number;
+  month: string;
+  year: number;
+  serial: {
+    id: number;
+    title: string;
+    img: string;
+  };
 }

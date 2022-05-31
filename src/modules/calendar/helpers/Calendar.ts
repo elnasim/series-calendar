@@ -1,4 +1,9 @@
-import { ISerial, TCalendar } from "../interfaces";
+import {
+  ISerial,
+  ISerialEpisode,
+  ISerialEpisodeWithSerialInfo,
+  TCalendar,
+} from "../interfaces";
 import { data } from "@/fakeServerRespone";
 
 class Calendar {
@@ -6,18 +11,18 @@ class Calendar {
 
   public getMonthByIndex(monthIndex: number): string {
     const monthByIndex = [
-      "Январь",
-      "Февраль",
-      "Март",
-      "Апрель",
-      "Май",
-      "Июнь",
-      "Июль",
-      "Август",
-      "Сентябрь",
-      "Октябрь",
-      "Ноябрь",
-      "Декабрь",
+      "January",
+      "February",
+      "March",
+      "April",
+      "May",
+      "June",
+      "July",
+      "August",
+      "September",
+      "October",
+      "November",
+      "December",
     ];
 
     return monthByIndex[monthIndex];
@@ -42,7 +47,10 @@ class Calendar {
     return [6, 0, 1, 2, 3, 4, 5][startDay];
   }
 
-  public calendarGenerate(date: Date) {
+  public calendarGenerate(
+    date: Date,
+    serialsData: ISerialEpisodeWithSerialInfo[]
+  ) {
     date.setDate(1);
     const month = date.getMonth();
     const year = date.getFullYear();
@@ -62,7 +70,7 @@ class Calendar {
         } else {
           this.calendarStructure[week][day] = {
             dayInfo: { dayIndex: iterableDay },
-            content: [],
+            content: this.findContentByDay(serialsData, iterableDay),
           };
 
           iterableDay++;
@@ -71,15 +79,21 @@ class Calendar {
     }
   }
 
-  public contentToCalendar(serialsData: ISerial[]) {
-    for (const serial of serialsData) {
-      console.log("-->", serial);
+  public findContentByDay(
+    serialsData: ISerialEpisodeWithSerialInfo[],
+    day: number
+  ): ISerialEpisodeWithSerialInfo[] {
+    const arr = [];
+    for (const episode of serialsData) {
+      if (episode.day === day) {
+        arr.push(episode);
+      }
     }
+    return arr;
   }
 
-  public getCalendar(date: Date, serialsData: ISerial[]) {
-    this.calendarGenerate(date);
-    this.contentToCalendar(serialsData);
+  public getCalendar(date: Date, serialsData: ISerialEpisodeWithSerialInfo[]) {
+    this.calendarGenerate(date, serialsData);
     return this.calendarStructure;
   }
 }

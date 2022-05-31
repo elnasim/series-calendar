@@ -33,18 +33,21 @@
 </template>
 
 <script lang="ts" setup>
-import { computed, onMounted, ref } from "vue";
+import { computed, onMounted, ref, watch } from "vue";
 import CalendarCell from "./CalendarCell.vue";
 import calendar from "@/modules/calendar/helpers/Calendar";
 import CalendarControl from "./CalendarControl.vue";
 import { useCalendarStore } from "../store/Calendar";
 import { storeToRefs } from "pinia";
 import axios from "axios";
-import { ISerial } from "@/modules/calendar/interfaces";
+import {
+  ISerial,
+  ISerialEpisodeWithSerialInfo,
+} from "@/modules/calendar/interfaces";
 
 const calendarStore = useCalendarStore();
 const { changedDate } = storeToRefs(calendarStore);
-const serialsData = ref<ISerial[]>([]);
+const serialsData = ref<ISerialEpisodeWithSerialInfo[]>([]);
 
 const calendarData = computed(() => {
   return calendar.getCalendar(changedDate.value, serialsData.value);
@@ -66,10 +69,16 @@ onMounted(async () => {
 });
 
 const fetchCalendarData = async () => {
-  const { data } = await axios(
-    "http://localhost:3000/api/serials/serialsByMonthAndYear?month=april&year=2022"
-  );
-  serialsData.value = data;
+  try {
+    const { data } = await axios(
+      `http://localhost:3000/api/episodes/findAllByMonthAndYear?month=${calendar
+        .getMonthByIndex(month.value)
+        .toLocaleLowerCase()}&year=${year.value}`
+    );
+    serialsData.value = data;
+  } catch (error) {
+    console.log("-->", error);
+  }
 };
 </script>
 
