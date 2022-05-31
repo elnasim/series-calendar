@@ -10,7 +10,7 @@
             v-for="item of props.dayData.content"
             :key="item.id"
             class="calendar-cell__movie"
-            :style="`background-image: url(${item.img});`"
+            :style="`background-image: url(${item.serial.img});`"
           >
             <div class="movie-title">{{ item.title }}</div>
           </div>
@@ -71,6 +71,8 @@ const cellsSize = () => {
 .calendar-cell__content {
   height: 100%;
   position: relative;
+  display: flex;
+  flex-direction: column;
 }
 
 .calendar-cell__movie {
@@ -78,9 +80,11 @@ const cellsSize = () => {
   height: 100%;
   background-size: cover;
   background-position: center;
+  background-repeat: no-repeat;
   display: flex;
   align-items: flex-end;
   padding: 4px;
+  position: relative;
 }
 
 .movie-title {

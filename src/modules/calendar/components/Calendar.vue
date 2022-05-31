@@ -45,8 +45,10 @@ import {
   ISerialEpisodeWithSerialInfo,
 } from "@/modules/calendar/interfaces";
 
+// Store
 const calendarStore = useCalendarStore();
 const { changedDate } = storeToRefs(calendarStore);
+
 const serialsData = ref<ISerialEpisodeWithSerialInfo[]>([]);
 
 const calendarData = computed(() => {
@@ -65,6 +67,10 @@ const year = computed((): number => {
 
 // Monted
 onMounted(async () => {
+  await fetchCalendarData();
+});
+
+watch(month, async () => {
   await fetchCalendarData();
 });
 
