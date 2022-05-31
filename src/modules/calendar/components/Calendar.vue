@@ -33,18 +33,21 @@
 </template>
 
 <script lang="ts" setup>
-import { computed } from "vue";
+import { computed, onMounted, ref } from "vue";
 import CalendarCell from "./CalendarCell.vue";
 import calendar from "@/modules/calendar/helpers/Calendar";
 import CalendarControl from "./CalendarControl.vue";
 import { useCalendarStore } from "../store/Calendar";
 import { storeToRefs } from "pinia";
+import axios from "axios";
+import { ISerial } from "@/modules/calendar/interfaces";
 
 const calendarStore = useCalendarStore();
 const { changedDate } = storeToRefs(calendarStore);
+const serialsData = ref<ISerial[]>([]);
 
 const calendarData = computed(() => {
-  return calendar.getCalendar(changedDate.value);
+  return calendar.getCalendar(changedDate.value, serialsData.value);
 });
 
 const month = computed((): number => {
@@ -56,6 +59,18 @@ const year = computed((): number => {
   const date = new Date(changedDate.value);
   return date.getFullYear();
 });
+
+// Monted
+onMounted(async () => {
+  await fetchCalendarData();
+});
+
+const fetchCalendarData = async () => {
+  const { data } = await axios(
+    "http://localhost:3000/api/serials/serialsByMonthAndYear?month=april&year=2022"
+  );
+  serialsData.value = data;
+};
 </script>
 
 <style scoped lang="scss">

@@ -1,4 +1,5 @@
-import { TCalendar } from "../interfaces";
+import { ISerial, TCalendar } from "../interfaces";
+import { data } from "@/fakeServerRespone";
 
 class Calendar {
   public calendarStructure: TCalendar = [];
@@ -70,10 +71,15 @@ class Calendar {
     }
   }
 
-  public contentToCalendar() {}
+  public contentToCalendar(serialsData: ISerial[]) {
+    for (const serial of serialsData) {
+      console.log("-->", serial);
+    }
+  }
 
-  public getCalendar(date: Date) {
+  public getCalendar(date: Date, serialsData: ISerial[]) {
     this.calendarGenerate(date);
+    this.contentToCalendar(serialsData);
     return this.calendarStructure;
   }
 }

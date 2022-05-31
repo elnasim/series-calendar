@@ -16,3 +16,17 @@ export interface IContentItem {
   title: string;
   img: string;
 }
+
+export interface ISerial {
+  id: number;
+  title: string;
+  img: string;
+  episodes: ISerialEpisode[];
+}
+
+export interface ISerialEpisode {
+  id: number;
+  title: string;
+  month: string;
+  year: string;
+}
