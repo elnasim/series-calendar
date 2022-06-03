@@ -3,8 +3,8 @@
     <CalendarControl
       :month="month"
       :year="year"
-      @nextMonth="calendarStore.setNextMonth"
-      @prevMonth="calendarStore.setPrevMonth"
+      @nextMonth="setNextMonth"
+      @prevMonth="setPrevMonth"
     />
 
     <table class="calendar-table">
@@ -33,20 +33,18 @@
 </template>
 
 <script lang="ts" setup>
-import { computed, onMounted, ref, watch, onBeforeUnmount } from "vue";
+import { computed, onMounted, ref, watch } from "vue";
 import CalendarCell from "./CalendarCell.vue";
 import calendar from "@/modules/calendar/helpers/Calendar";
 import CalendarControl from "./CalendarControl.vue";
 import { useCalendarStore } from "../store/Calendar";
 import { storeToRefs } from "pinia";
 import axios from "axios";
-import {
-  ISerial,
-  ISerialEpisodeWithSerialInfo,
-} from "@/modules/calendar/interfaces";
+import { ISerialEpisodeWithSerialInfo } from "@/modules/calendar/interfaces";
 
 // Store
 const calendarStore = useCalendarStore();
+const { setNextMonth, setPrevMonth } = calendarStore;
 const { changedDate } = storeToRefs(calendarStore);
 
 const serialsData = ref<ISerialEpisodeWithSerialInfo[]>([]);
@@ -65,7 +63,7 @@ const year = computed((): number => {
   return date.getFullYear();
 });
 
-// Monted
+// Mounted
 onMounted(async () => {
   await fetchCalendarData();
 });
