@@ -1,17 +1,17 @@
 <template>
-  <td :style="cellsSize()">
-    <div class="calendar-cell">
-      <div class="calendar-cell__inner" v-if="props.dayData">
-        <div class="calendar-cell__date-number">
-          {{ props.dayData?.dayInfo.dayIndex }}
-        </div>
-        <div class="calendar-cell__content">
-          <div
-            v-for="item of props.dayData.content"
-            :key="item.id"
-            class="calendar-cell__movie"
-            :style="`background-image: url(${item.serial.img});`"
-          >
+  <td class="calendar-td" :style="cellsSize()">
+    <div class="calendar-cell" v-if="props.dayData">
+      <div class="calendar-cell__date-number">
+        {{ props.dayData?.dayInfo.dayIndex }}
+      </div>
+      <div class="calendar-cell__content">
+        <div
+          v-for="item of props.dayData.content"
+          :key="item.id"
+          class="calendar-cell__movie"
+          :style="`background-image: url(${item.serial.img});`"
+        >
+          <div class="movie-title-wrapper">
             <div class="movie-title">{{ item.title }}</div>
           </div>
         </div>
@@ -30,21 +30,21 @@ const props = defineProps<{
 
 const cellsSize = () => {
   if (props.dayData && props.dayData.content.length > 1) {
-    return `width: calc(100% / 7 * ${props.dayData?.content?.length})`;
+    return `width: 20%`;
   }
 
-  return `width: calc(100% / 7)`;
+  return ``;
 };
 </script>
 
 <style scoped lang="scss">
-.calendar-cell {
-  width: 100%;
-  height: 100px;
-  padding: 2px;
+.calendar-td {
+  height: 140px;
+  padding: 4px;
 }
 
-.calendar-cell__inner {
+.calendar-cell {
+  width: 100%;
   height: 100%;
   position: relative;
   background-color: var(--color-2);
@@ -66,11 +66,11 @@ const cellsSize = () => {
   justify-content: center;
   font-size: 12px;
   font-weight: bold;
+  z-index: 1;
 }
 
 .calendar-cell__content {
   height: 100%;
-  position: relative;
   display: flex;
   flex-direction: column;
 }
@@ -85,12 +85,14 @@ const cellsSize = () => {
   align-items: flex-end;
   padding: 4px;
   position: relative;
+  margin-bottom: 2px;
+
+  &:last-child {
+    margin-bottom: 0;
+  }
 }
 
-.movie-title {
-  // white-space: nowrap;
-  // overflow: hidden;
-  // text-overflow: ellipsis;
+.movie-title-wrapper {
   position: absolute;
   top: 0;
   left: 0;
@@ -98,12 +100,16 @@ const cellsSize = () => {
   bottom: 0;
   display: flex;
   align-items: flex-end;
-  background: linear-gradient(
-    0deg,
-    rgba(34, 34, 59, 1) 0%,
-    rgba(0, 212, 255, 0) 100%
-  );
-  color: var(--color-4);
-  padding: 4px 2px;
+  padding: 2px;
+  background: linear-gradient(0deg, rgba(#22223b, 1) 0%, rgba(#22223b, 0) 100%);
+}
+
+.movie-title {
+  width: 95%;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  color: white;
+  font-size: 14px;
 }
 </style>

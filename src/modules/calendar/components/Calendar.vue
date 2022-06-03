@@ -10,13 +10,13 @@
     <table class="calendar-table">
       <thead class="calendar-table__head">
         <tr>
-          <th>ПН</th>
-          <th>ВТ</th>
-          <th>СР</th>
-          <th>ЧТ</th>
-          <th>ПТ</th>
-          <th>СБ</th>
-          <th>ВС</th>
+          <th><span style="width: 40px; display: inline-block">ПН</span></th>
+          <th><span style="width: 40px; display: inline-block">ВТ</span></th>
+          <th><span style="width: 40px; display: inline-block">СР</span></th>
+          <th><span style="width: 40px; display: inline-block">ЧТ</span></th>
+          <th><span style="width: 40px; display: inline-block">ПТ</span></th>
+          <th><span style="width: 40px; display: inline-block">СБ</span></th>
+          <th><span style="width: 40px; display: inline-block">ВС</span></th>
         </tr>
       </thead>
       <tbody>
@@ -105,6 +105,6 @@ const fetchCalendarData = async () => {
 
 .calendar-table__head {
   height: 50px;
-  color: #d1d1d1;
+  color: var(--color-4);
 }
 </style>
