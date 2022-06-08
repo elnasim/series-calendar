@@ -1,6 +1,7 @@
 import { createRouter, createWebHistory, RouteRecordRaw } from "vue-router";
 import HomeView from "@/views/HomeView.vue";
 import AddContentView from "@/views/AddContentView.vue";
+import ShowContentView from "@/views/ShowContentView.vue";
 
 const routes: Array<RouteRecordRaw> = [
   {
@@ -12,6 +13,15 @@ const routes: Array<RouteRecordRaw> = [
     path: "/add",
     name: "add-content",
     component: AddContentView,
+  },
+  {
+    path: "/show",
+    name: "show",
+    component: ShowContentView,
+  },
+  {
+    path: "/:pathMatch(.*)*",
+    redirect: "/",
   },
 ];
 
