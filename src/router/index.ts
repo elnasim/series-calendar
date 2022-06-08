@@ -1,7 +1,8 @@
 import { createRouter, createWebHistory, RouteRecordRaw } from "vue-router";
 import HomeView from "@/views/HomeView.vue";
 import AddContentView from "@/views/AddContentView.vue";
-import ShowContentView from "@/views/ShowContentView.vue";
+import AdminSerialsView from "@/views/admin/serials/AdminSerialsView.vue";
+import AdminSerialView from "@/views/admin/serials/id/AdminSerialView.vue";
 
 const routes: Array<RouteRecordRaw> = [
   {
@@ -10,14 +11,24 @@ const routes: Array<RouteRecordRaw> = [
     component: HomeView,
   },
   {
-    path: "/add",
+    path: "/admin",
+    name: "admin",
+    redirect: "/",
+  },
+  {
+    path: "/admin/add",
     name: "add-content",
     component: AddContentView,
   },
   {
-    path: "/show",
+    path: "/admin/serials",
+    name: "admin-serials",
+    component: AdminSerialsView,
+  },
+  {
+    path: "/admin/serials/:id",
     name: "show",
-    component: ShowContentView,
+    component: AdminSerialView,
   },
   {
     path: "/:pathMatch(.*)*",

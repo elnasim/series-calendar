@@ -21,7 +21,7 @@ export interface ISerial {
   id: number;
   title: string;
   img: string;
-  episodes: ISerialEpisode[];
+  episodes?: ISerialEpisode[];
 }
 
 export interface ISerialEpisode {
