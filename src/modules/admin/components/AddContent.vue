@@ -13,12 +13,6 @@
         placeholder="Image Link"
         v-model="img"
       />
-      <input
-        class="add-content-form__input"
-        type="text"
-        placeholder="Date"
-        v-model="date"
-      />
       <button class="add-content-form__button">Submit</button>
     </form>
   </div>
@@ -26,13 +20,20 @@
 
 <script lang="ts" setup>
 import { ref } from "vue";
+import axios from "axios";
 
 const title = ref("");
 const img = ref("");
-const date = ref("");
 
-const submit = () => {
-  console.log("-->", 1);
+const submit = async () => {
+  await axios({
+    method: "POST",
+    url: "http://localhost:3000/api/serials",
+    data: {
+      title: title.value,
+      img: img.value,
+    },
+  });
 };
 </script>
 
