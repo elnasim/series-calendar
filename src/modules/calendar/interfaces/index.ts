@@ -25,7 +25,7 @@ export interface ISerial {
 }
 
 export interface ISerialEpisode {
-  id: number;
+  id?: number;
   title: string;
   day: number;
   month: string;

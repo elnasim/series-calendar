@@ -44,9 +44,9 @@ class AdminService extends BaseService {
     return data;
   }
 
-  public async addEpisode(
-    serialId: string,
-    payload: IEditSerial[]
+  public async addEpisodes(
+    serialId: number,
+    payload: ISerialEpisode[]
   ): Promise<ISerial> {
     const { data } = await axios({
       method: "POST",
@@ -56,22 +56,20 @@ class AdminService extends BaseService {
     return data;
   }
 
-  public async updateEpisode(
-    episodeId: number,
-    payload: IEditSerial
-  ): Promise<boolean> {
+  public async updateEpisodes(payload: ISerialEpisode[]): Promise<boolean> {
     const { data } = await axios({
       method: "PATCH",
-      url: `http://localhost:3000/api/episodes/${episodeId}`,
+      url: `http://localhost:3000/api/episodes`,
       data: payload,
     });
     return data;
   }
 
-  public async removeEpisode(episodeId: number): Promise<boolean> {
+  public async removeEpisodes(payload: number[]): Promise<boolean> {
     const { data } = await axios({
       method: "DELETE",
-      url: `http://localhost:3000/api/episodes/${episodeId}`,
+      url: `http://localhost:3000/api/episodes`,
+      data: payload,
     });
     return data;
   }

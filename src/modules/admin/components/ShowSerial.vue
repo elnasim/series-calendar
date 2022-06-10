@@ -30,64 +30,41 @@
       <div class="episodes" v-if="serial && serial.episodes">
         <div class="episodes__title">Эпизоды</div>
 
-        <div
-          v-for="episode of serial.episodes"
+        <EpisodeEdit
+          v-for="(episode, index) of serial.episodes"
           :key="episode.id"
-          class="episode"
-        >
-          <div class="episode__col">
-            <div class="episode__edit">
-              <input
-                class="edit-input"
-                type="text"
-                placeholder="Название серии"
-              />
-              <input class="edit-input" type="text" placeholder="День" />
-              <input class="edit-input" type="text" placeholder="Месяц" />
-              <input class="edit-input" type="text" placeholder="Год" />
-            </div>
-
-            <div class="episode__show-info">
-              <div class="episode__title">{{ episode.title }}</div>
-              <div class="episode__date">
-                {{ episode.day }} {{ episode.month }} {{ episode.year }}
-              </div>
-            </div>
-          </div>
-
-          <div class="episode__control">
-            <button @click="removeEpisode(episode.id)" class="button">
-              Удалить
-            </button>
-          </div>
-        </div>
+          :episodeData="episode"
+          :index="index"
+          @updateEpisodesData="updateEpisodesData"
+          @changeRemoveEpisodesArr="changeRemoveEpisodesArr"
+        />
 
         <div class="show-serial__control">
           <button
-            @click="isAddNewEpisode = true"
+            @click="addEpisode"
             class="show-serial__control-button button"
           >
             + Добавить эпизод
           </button>
-        </div>
 
-        <div class="show-serial__control">
           <div v-if="serial && serial.episodes.length > 0">
             <button
-              @click="updateEpisodes"
+              @click="saveAndUpdateEpisodes"
               class="show-serial__control-button button"
             >
               Сохранить
             </button>
-
-            <button class="show-serial__control-button button">
-              Редактировать
-            </button>
           </div>
+
+          <button
+            v-if="removeEpisodesId.length > 0"
+            @click="removeEpisodes"
+            class="show-serial__control-button button"
+          >
+            - Удалить эпизоды
+          </button>
         </div>
       </div>
-
-      <AddNewEpisode v-if="isAddNewEpisode" @addEpisode="addEpisode" />
     </div>
   </div>
 </template>
@@ -97,13 +74,12 @@ import { ISerial } from "@/modules/calendar/interfaces";
 import router from "@/router";
 import { onMounted, ref } from "vue";
 import adminService from "../services/AdminService";
-import AddNewEpisode from "./AddNewEpisode.vue";
-import { IEditSerial } from "@/modules/admin/types";
 import { ISerialEpisode } from "@/modules/calendar/interfaces";
+import EpisodeEdit from "@/modules/admin/components/EpisodeEdit.vue";
 
 const serial = ref<ISerial>();
 const episodes = ref<ISerialEpisode[]>();
-const isAddNewEpisode = ref(false);
+const removeEpisodesId = ref<number[]>([]);
 
 const title = ref("");
 const imgLink = ref("");
@@ -112,6 +88,7 @@ onMounted(() => {
   getSerialById();
 });
 
+// Сериалы
 const getSerialById = async () => {
   serial.value = await adminService.getSerialById(
     router.currentRoute.value.params.id as string
@@ -153,38 +130,77 @@ const removeSerialById = async () => {
   }
 };
 
-const updateEpisode = async (episodeId: number, payload: IEditSerial) => {
-  try {
-    const res = await adminService.updateEpisode(episodeId, payload);
-  } catch (e) {
-    console.log("-->", e);
+// Добавление эпизодов
+const addEpisode = () => {
+  if (episodes.value !== undefined) {
+    episodes.value.push({
+      day: 0,
+      month: "april",
+      title: "Детство Шелдона april episode 22",
+      year: 2022,
+    });
   }
 };
 
-const addEpisode = async (payload: IEditSerial) => {
+const saveEpisodes = async () => {
   try {
-    serial.value = await adminService.addEpisode(
-      router.currentRoute.value.params.id as string,
-      [payload]
-    );
-
-    isAddNewEpisode.value = false;
+    if (serial.value?.id && episodes.value) {
+      const arr = episodes.value.filter((item) => item.id === undefined);
+      await adminService.addEpisodes(serial.value?.id, arr);
+    }
   } catch (error) {
     console.log("-->", error);
   }
 };
 
-const removeEpisode = async (episodeId: number) => {
-  if (confirm("Удалить эпизод?")) {
+// Удаление упизодов
+const changeRemoveEpisodesArr = (id: number) => {
+  if (removeEpisodesId.value.includes(id)) {
+    removeEpisodesId.value = removeEpisodesId.value.filter(
+      (item) => item !== id
+    );
+  } else {
+    removeEpisodesId.value.push(id);
+  }
+};
+
+const removeEpisodes = async () => {
+  if (confirm("Удалить эпизоды?")) {
     try {
-      const res = await adminService.removeEpisode(episodeId);
-      if (res) {
-        await getSerialById();
+      if (removeEpisodesId.value.length > 0) {
+        const res = await adminService.removeEpisodes(removeEpisodesId.value);
+        if (res) {
+          await getSerialById();
+        }
       }
+      removeEpisodesId.value = [];
     } catch (error) {
       console.log("-->", error);
     }
   }
+};
+
+// Обновление эпизодов
+const updateEpisodesData = (payload: any) => {
+  if (episodes.value !== undefined) {
+    episodes.value[payload.index] = payload.episodeData;
+  }
+};
+
+const updateEpisodes = async () => {
+  try {
+    if (episodes.value !== undefined) {
+      const arr = episodes.value.filter((item) => item.id !== undefined);
+      await adminService.updateEpisodes(arr);
+    }
+  } catch (error) {
+    console.log("-->", error);
+  }
+};
+
+const saveAndUpdateEpisodes = async () => {
+  await saveEpisodes();
+  await updateEpisodes();
 };
 </script>
 
@@ -234,20 +250,5 @@ const removeEpisode = async (episodeId: number) => {
   margin-bottom: 50px;
   text-align: center;
   text-transform: uppercase;
-}
-
-.episode {
-  background-color: var(--color-2);
-  padding: 5px;
-  color: var(--color-5);
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  border-radius: 4px;
-  margin-bottom: 10px;
-}
-
-.episode__col {
-  width: 100%;
 }
 </style>
