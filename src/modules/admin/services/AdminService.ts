@@ -1,7 +1,6 @@
-import { ISerial, ISerialEpisode } from "@/modules/calendar/interfaces";
+import { ISerial, ISerialEpisode } from "@/modules/calendar/types";
 import axios from "axios";
 import { BaseService } from "@/modules/common/services/BaseService";
-import { IEditSerial } from "@/modules/admin/types";
 
 class AdminService extends BaseService {
   public async getAllSerials(): Promise<ISerial[]> {
@@ -25,7 +24,7 @@ class AdminService extends BaseService {
     return data;
   }
 
-  public async removeSerialById(id: string): Promise<boolean> {
+  public async removeSerialById(id: number): Promise<boolean> {
     const { data } = await axios.delete(
       `http://localhost:3000/api/serials/${id}`
     );

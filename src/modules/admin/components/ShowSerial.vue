@@ -70,11 +70,11 @@
 </template>
 
 <script lang="ts" setup>
-import { ISerial } from "@/modules/calendar/interfaces";
+import { ISerial, MonthsEnum } from "@/modules/calendar/types";
 import router from "@/router";
 import { onMounted, ref } from "vue";
 import adminService from "../services/AdminService";
-import { ISerialEpisode } from "@/modules/calendar/interfaces";
+import { ISerialEpisode } from "@/modules/calendar/types";
 import EpisodeEdit from "@/modules/admin/components/EpisodeEdit.vue";
 
 const serial = ref<ISerial>();
@@ -120,9 +120,7 @@ const updateSerial = async () => {
 const removeSerialById = async () => {
   if (confirm("Удалить?")) {
     try {
-      await adminService.removeSerialById(
-        router.currentRoute.value.params.id as string
-      );
+      await adminService.removeSerialById(+router.currentRoute.value.params.id);
       return router.push("/admin/serials");
     } catch (error) {
       console.log("-->", error);
@@ -134,9 +132,9 @@ const removeSerialById = async () => {
 const addEpisode = () => {
   if (episodes.value !== undefined) {
     episodes.value.push({
-      day: 0,
-      month: "april",
-      title: "Детство Шелдона april episode 22",
+      day: 5,
+      month: MonthsEnum.August,
+      title: "",
       year: 2022,
     });
   }

@@ -40,7 +40,7 @@ import CalendarControl from "./CalendarControl.vue";
 import { useCalendarStore } from "../store/Calendar";
 import { storeToRefs } from "pinia";
 import axios from "axios";
-import { ISerialEpisodeWithSerialInfo } from "@/modules/calendar/interfaces";
+import { ISerialEpisodeWithSerialInfo, MonthsEnum } from "@/modules/calendar/types";
 
 // Store
 const calendarStore = useCalendarStore();
@@ -53,7 +53,7 @@ const calendarData = computed(() => {
   return calendar.getCalendar(changedDate.value, serialsData.value);
 });
 
-const month = computed((): number => {
+const month = computed((): MonthsEnum => {
   const date = new Date(changedDate.value);
   return date.getMonth();
 });
@@ -76,9 +76,7 @@ watch(month, async () => {
 const fetchCalendarData = async () => {
   try {
     const { data } = await axios(
-      `http://localhost:3000/api/episodes/findAllByMonthAndYear?month=${calendar
-        .getMonthByIndex(month.value)
-        .toLocaleLowerCase()}&year=${year.value}`
+      `http://localhost:3000/api/episodes/findAllByMonthAndYear?month=${month.value}&year=${year.value}`
     );
     serialsData.value = data;
   } catch (error) {

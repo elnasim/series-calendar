@@ -1,15 +1,9 @@
-import {
-  ISerial,
-  ISerialEpisode,
-  ISerialEpisodeWithSerialInfo,
-  TCalendar,
-} from "../interfaces";
-import { data } from "@/fakeServerRespone";
+import { ISerialEpisodeWithSerialInfo, MonthsEnum, TCalendar } from "../types";
 
 class Calendar {
   public calendarStructure: TCalendar = [];
 
-  public getMonthByIndex(monthIndex: number): string {
+  public getMonthByIndex(monthIndex: MonthsEnum): string {
     const monthByIndex = [
       "January",
       "February",
@@ -32,7 +26,7 @@ class Calendar {
     return (year % 4 == 0 && year % 100 != 0) || year % 400 == 0;
   }
 
-  public getDaysInMonth(month: number, year: number): number {
+  public getDaysInMonth(month: MonthsEnum, year: number): number {
     const months = [31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31];
 
     if (month === 1 && this.isLeapYear(year)) {
@@ -95,6 +89,18 @@ class Calendar {
   public getCalendar(date: Date, serialsData: ISerialEpisodeWithSerialInfo[]) {
     this.calendarGenerate(date, serialsData);
     return this.calendarStructure;
+  }
+
+  public getYMDDate(date: Date): string {
+    return `${date.getFullYear()}-${
+      date.getMonth().toString().length === 2
+        ? date.getMonth() + 1
+        : "0" + (date.getMonth() + 1)
+    }-${
+      date.getDate().toString().length === 2
+        ? date.getDate()
+        : "0" + date.getDate()
+    }`;
   }
 }
 

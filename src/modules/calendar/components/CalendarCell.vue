@@ -21,7 +21,7 @@
 </template>
 
 <script lang="ts" setup>
-import { TDay } from "../interfaces";
+import { TDay } from "../types";
 
 // eslint-disable-next-line no-undef
 const props = defineProps<{

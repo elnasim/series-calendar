@@ -4,32 +4,13 @@
       <div class="episode__edit">
         <input
           @input="update"
-          v-model="title"
-          class="edit-input"
+          v-model="titleRef"
+          class="episode__edit-input edit-input"
           type="text"
           placeholder="Название серии"
         />
-        <input
-          @input="update"
-          v-model="day"
-          class="edit-input"
-          type="text"
-          placeholder="День"
-        />
-        <input
-          @input="update"
-          v-model="month"
-          class="edit-input"
-          type="text"
-          placeholder="Месяц"
-        />
-        <input
-          @input="update"
-          v-model="year"
-          class="edit-input"
-          type="text"
-          placeholder="Год"
-        />
+
+        <input type="date" @change="update" v-model="dateRef" />
       </div>
     </div>
 
@@ -40,8 +21,9 @@
 </template>
 
 <script lang="ts" setup>
-import { ISerialEpisode } from "@/modules/calendar/interfaces";
+import { ISerialEpisode } from "@/modules/calendar/types";
 import { defineEmits, onMounted, ref } from "vue";
+import calendar from "@/modules/calendar/helpers/Calendar";
 
 // eslint-disable-next-line no-undef
 const props = defineProps<{
@@ -54,34 +36,38 @@ const emit = defineEmits<{
   (e: "changeRemoveEpisodesArr", a: number): void;
 }>();
 
-const title = ref();
-const day = ref();
-const month = ref();
-const year = ref();
+const titleRef = ref();
+const dateRef = ref<string>();
 
 onMounted(() => {
-  title.value = props.episodeData.title;
-  day.value = props.episodeData.day;
-  month.value = props.episodeData.month;
-  year.value = props.episodeData.year;
+  titleRef.value = props.episodeData.title;
+  dateRef.value = calendar.getYMDDate(
+    new Date(
+      props.episodeData.year,
+      props.episodeData.month,
+      props.episodeData.day
+    )
+  );
 });
-
-const update = () => {
-  emit("updateEpisodesData", {
-    episodeData: {
-      id: props.episodeData.id,
-      title: title.value,
-      day: +day.value,
-      month: month.value,
-      year: +year.value,
-    },
-    index: props.index,
-  });
-};
 
 const checkboxHandler = () => {
   // @ts-ignore
   emit("changeRemoveEpisodesArr", props.episodeData.id);
+};
+
+const update = () => {
+  const date = dateRef.value ? new Date(dateRef.value) : new Date();
+
+  emit("updateEpisodesData", {
+    episodeData: {
+      id: props.episodeData.id,
+      title: titleRef.value,
+      day: date.getDate(),
+      month: date.getMonth(),
+      year: date.getFullYear(),
+    },
+    index: props.index,
+  });
 };
 </script>
 
@@ -99,5 +85,13 @@ const checkboxHandler = () => {
 
 .episode__col {
   width: 100%;
+}
+
+.episode__edit-input {
+  background-color: var(--color-1);
+  color: var(--color-5);
+  border: none;
+  margin-bottom: 2px;
+  border-radius: 4px;
 }
 </style>

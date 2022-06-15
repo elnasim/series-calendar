@@ -30,7 +30,7 @@
 
 <script lang="ts" setup>
 import { onMounted, ref } from "vue";
-import { ISerial } from "@/modules/calendar/interfaces";
+import { ISerial } from "@/modules/calendar/types";
 import adminService from "@/modules/admin/services/AdminService";
 
 const serials = ref<ISerial[] | null>([]);
