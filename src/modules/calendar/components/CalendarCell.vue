@@ -12,7 +12,7 @@
           :style="`background-image: url(${item.serial.img});`"
         >
           <div class="movie-title-wrapper">
-            <div class="movie-title">{{ item.title }}</div>
+            <div class="movie-title">{{ item.serial.title }}</div>
           </div>
         </div>
       </div>
@@ -21,7 +21,7 @@
 </template>
 
 <script lang="ts" setup>
-import { TDay } from "../interfaces";
+import { TDay } from "../types";
 
 // eslint-disable-next-line no-undef
 const props = defineProps<{

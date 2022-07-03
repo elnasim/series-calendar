@@ -14,9 +14,10 @@
 
 <script lang="ts" setup>
 import Calendar from "../helpers/Calendar";
+import { MonthsEnum } from "@/modules/calendar/types";
 // eslint-disable-next-line no-undef
 const props = defineProps<{
-  month: number;
+  month: MonthsEnum;
   year: number;
 }>();
 </script>

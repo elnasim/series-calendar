@@ -19,21 +19,20 @@
 </template>
 
 <script lang="ts" setup>
+import router from "@/router";
 import { ref } from "vue";
-import axios from "axios";
+import adminService from "../services/AdminService";
 
 const title = ref("");
 const img = ref("");
 
 const submit = async () => {
-  await axios({
-    method: "POST",
-    url: "http://localhost:3000/api/serials",
-    data: {
-      title: title.value,
-      img: img.value,
-    },
-  });
+  try {
+    await adminService.addSerial(title.value, img.value);
+    router.push("/admin/serials");
+  } catch (error) {
+    console.log("-->", error);
+  }
 };
 </script>
 
