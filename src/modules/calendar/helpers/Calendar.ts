@@ -79,7 +79,8 @@ class Calendar {
   ): ISerialEpisodeWithSerialInfo[] {
     const arr = [];
     for (const episode of serialsData) {
-      if (episode.day === day) {
+      const date = new Date(episode.date);
+      if (date.getDate() === day) {
         arr.push(episode);
       }
     }

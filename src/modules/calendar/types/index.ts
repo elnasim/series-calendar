@@ -35,9 +35,7 @@ export interface ISerialEpisode {
 export interface ISerialEpisodeWithSerialInfo {
   id: number;
   title: string;
-  day: number;
-  month: MonthsEnum;
-  year: number;
+  date: Date;
   serial: {
     id: number;
     title: string;
