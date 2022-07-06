@@ -4,15 +4,15 @@
       <div class="calendar-cell__date-number">
         {{ props.dayData?.dayInfo.dayIndex }}
       </div>
-      <div class="calendar-cell__content">
+      <div class="calendar-cell__content" v-if="props.dayData?.content.length">
         <div
           v-for="item of props.dayData.content"
           :key="item.id"
           class="calendar-cell__movie"
-          :style="`background-image: url(${item.serial.img});`"
+          :style="`background-image: url(${item.serial?.img});`"
         >
           <div class="movie-title-wrapper">
-            <div class="movie-title">{{ item.serial.title }}</div>
+            <div class="movie-title">{{ item.serial?.title }}</div>
           </div>
         </div>
       </div>
