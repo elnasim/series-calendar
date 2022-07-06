@@ -1,5 +1,5 @@
 <template>
-  <div class="calendar" v-if="calendarData">
+  <div class="container flex flex-wrap" v-if="calendarData">
     <CalendarControl
       :month="month"
       :year="year"
@@ -7,8 +7,8 @@
       @prevMonth="setPrevMonth"
     />
 
-    <table class="calendar-table">
-      <thead class="calendar-table__head">
+    <table class="w-full border-collapse">
+      <thead class="h-12 text-color-4">
         <tr>
           <th><span style="width: 40px; display: inline-block">ПН</span></th>
           <th><span style="width: 40px; display: inline-block">ВТ</span></th>
@@ -88,23 +88,3 @@ const fetchCalendarData = async () => {
   }
 };
 </script>
-
-<style scoped lang="scss">
-.calendar {
-  width: 100%;
-  max-width: 1200px;
-  display: flex;
-  flex-wrap: wrap;
-  margin: 0 auto;
-}
-
-.calendar-table {
-  width: 100%;
-  border-collapse: collapse;
-}
-
-.calendar-table__head {
-  height: 50px;
-  color: var(--color-4);
-}
-</style>

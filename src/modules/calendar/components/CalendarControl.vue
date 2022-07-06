@@ -1,12 +1,20 @@
 <template>
-  <div class="calendar-control">
-    <button class="calendar-control__button" @click="$emit('prevMonth')">
+  <div class="w-full flex justify-center items-center mb-12">
+    <button
+      class="outline-none bg-color-5 text-color-1 rounded-full w-8 h-8 text-lg cursor-pointer select-none"
+      @click="$emit('prevMonth')"
+    >
       ←
     </button>
-    <div class="calendar-control__title">
+    <div
+      class="text-color-5 font-bold text-2xl ml-12 mr-12 w-56 text-center select-none"
+    >
       {{ Calendar.getMonthByIndex(month) }} | {{ year }}
     </div>
-    <button class="calendar-control__button" @click="$emit('nextMonth')">
+    <button
+      class="outline-none bg-color-5 text-color-1 rounded-full w-8 h-8 text-lg cursor-pointer select-none"
+      @click="$emit('nextMonth')"
+    >
       →
     </button>
   </div>
@@ -21,35 +29,3 @@ const props = defineProps<{
   year: number;
 }>();
 </script>
-
-<style scoped lang="scss">
-.calendar-control {
-  width: 100%;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  margin-bottom: 50px;
-}
-
-.calendar-control__title {
-  color: var(--color-5);
-  font-weight: bold;
-  font-size: 26px;
-  margin: 0 36px;
-  width: 210px;
-  text-align: center;
-}
-
-.calendar-control__button {
-  border: none;
-  outline: none;
-  background-color: var(--color-5);
-  color: var(--color-1);
-  border-radius: 100%;
-  width: 30px;
-  height: 30px;
-  font-size: 18px;
-  cursor: pointer;
-  user-select: none;
-}
-</style>

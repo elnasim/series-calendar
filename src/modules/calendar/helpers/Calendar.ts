@@ -89,7 +89,6 @@ class Calendar {
 
   public getCalendar(date: Date, serialsData: ISerialEpisodeWithSerialInfo[]) {
     this.calendarGenerate(date, serialsData);
-    console.log("-->", this.calendarStructure);
     return this.calendarStructure;
   }
 
