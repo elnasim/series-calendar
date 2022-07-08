@@ -1,5 +1,16 @@
 <template>
   <div class="container flex flex-wrap" v-if="calendarData">
+    <button
+      class="mx-auto max-w-[260px] w-full bg-color-4 rounded-md mb-4"
+      @click="toggleIsShowOnlyLastEpisodes"
+    >
+      {{
+        getIsShowOnlyLastEpisodes
+          ? "Показывать только последние эпизоды сезона"
+          : "Показывать все эпизоды"
+      }}
+    </button>
+
     <CalendarControl
       :month="month"
       :year="year"
@@ -26,6 +37,7 @@
             :key="index"
             :dayData="day"
             :month="month"
+            :isShowOnlyLastEpisodes="getIsShowOnlyLastEpisodes"
           />
         </tr>
       </tbody>
@@ -45,22 +57,25 @@ import { ISerialEpisodeWithSerialInfo } from "@/modules/calendar/types";
 
 // Store
 const calendarStore = useCalendarStore();
-const { setNextMonth, setPrevMonth } = calendarStore;
-const { changedDate } = storeToRefs(calendarStore);
+const { setNextMonth, setPrevMonth, toggleIsShowOnlyLastEpisodes } =
+  calendarStore;
+
+const { getChangedDate, getIsShowOnlyLastEpisodes } =
+  storeToRefs(calendarStore);
 
 const serialsData = ref<ISerialEpisodeWithSerialInfo[]>([]);
 
 const calendarData = computed(() => {
-  return calendar.getCalendar(changedDate.value, serialsData.value);
+  return calendar.getCalendar(getChangedDate.value, serialsData.value);
 });
 
 const month = computed((): number => {
-  const date = new Date(changedDate.value);
+  const date = new Date(getChangedDate.value);
   return date.getMonth();
 });
 
 const year = computed((): number => {
-  const date = new Date(changedDate.value);
+  const date = new Date(getChangedDate.value);
   return date.getFullYear();
 });
 

@@ -38,6 +38,7 @@ export interface ISerialEpisodeWithSerialInfo {
   serial_id: number;
   season: number;
   episode_number: number;
+  is_last_season_episode: number;
   date: Date;
   serial: {
     id: number;

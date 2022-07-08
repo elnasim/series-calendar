@@ -6,7 +6,7 @@
     >
       <div
         :class="isCurrentDay && `bg-red`"
-        class="absolute top-1 left-1 w-5 h-5 bg-color-1 text-color-5 rounded-full flex justify-center items-center text-xs font-bold z-[1]"
+        class="absolute top-1 right-1 w-5 h-5 bg-color-1 text-color-5 rounded-full flex justify-center items-center text-xs font-bold z-[1]"
       >
         {{ props.dayData?.dayInfo.dayIndex }}
       </div>
@@ -21,14 +21,25 @@
         <div
           v-for="item of dayDataWithoutRepeatedSerial"
           :key="item.id"
-          class="w-full h-full bg-cover bg-repeat flex items-end p-1 relative mb-0.5 last:mb-0"
-          :style="`background-image: url('${item.serial?.img}');`"
+          :class="
+            !isShowOnlyLastEpisodes || item.is_last_season_episode === 1
+              ? 'w-full h-full'
+              : ''
+          "
         >
           <div
-            class="absolute inset-0 flex items-end p-0.5 bg-gradient-to-t from-color-1 to-transparent"
+            v-if="!isShowOnlyLastEpisodes || item.is_last_season_episode === 1"
+            class="w-full h-full bg-cover bg-repeat flex items-end p-1 relative mb-0.5 last:mb-0"
+            :style="`background-image: url('${item.serial?.img}');`"
           >
-            <div class="w-11/12 overflow-hidden truncate text-color-5 text-xs">
-              {{ item.serial?.title }}
+            <div
+              class="absolute inset-0 flex items-end p-0.5 bg-gradient-to-t from-color-1 to-transparent"
+            >
+              <div
+                class="w-11/12 overflow-hidden truncate text-color-5 text-xs"
+              >
+                {{ item.serial?.title }}
+              </div>
             </div>
           </div>
         </div>
@@ -39,12 +50,13 @@
 
 <script lang="ts" setup>
 import { computed } from "vue";
-import { ISerialEpisodeWithSerialInfo, TDay } from "../types";
+import { TDay } from "../types";
 
 // eslint-disable-next-line no-undef
 const props = defineProps<{
   dayData: TDay;
   month: number;
+  isShowOnlyLastEpisodes: boolean;
 }>();
 
 const cellsSize = () => {
@@ -56,16 +68,25 @@ const cellsSize = () => {
 };
 
 const dayDataWithoutRepeatedSerial = computed(() => {
-  if (props.dayData) {
-    const serialIds = props.dayData.content.map((o) => o.serial_id);
-    const filtered = props.dayData.content.filter(
-      ({ serial_id }, index) => !serialIds.includes(serial_id, index + 1)
-    );
+  // Продумать фильтрацию. Сейчас могут появиться 2 серии одного сериала, если одна из серий завершает сезон
+  const lastEpisodes = props.dayData?.content.filter((item) => {
+    return item.is_last_season_episode === 1;
+  });
 
-    return filtered;
+  const notLastEpisodes = props.dayData?.content.filter((item) => {
+    return item.is_last_season_episode !== 1;
+  });
+
+  const serialIds = notLastEpisodes?.map((o) => o.serial_id);
+  const filtered = notLastEpisodes?.filter(
+    ({ serial_id }, index) => !serialIds?.includes(serial_id, index + 1)
+  );
+
+  if (lastEpisodes && filtered) {
+    return [...lastEpisodes, ...filtered];
   }
 
-  return null;
+  return [];
 });
 
 const isCurrentDay = computed(() => {

@@ -3,16 +3,24 @@ import { defineStore } from "pinia";
 export interface ICalendarStore {
   currentUserDate: Date;
   changedDate: Date;
+  isShowOnlyLastEpisodes: boolean;
 }
 
 export const useCalendarStore = defineStore("calendar", {
   state: (): ICalendarStore => ({
     currentUserDate: new Date(),
     changedDate: new Date(),
+    isShowOnlyLastEpisodes: false,
   }),
   getters: {
     getCurrentUserDate(state): Date | null {
       return state.currentUserDate;
+    },
+    getChangedDate(state): Date {
+      return state.changedDate;
+    },
+    getIsShowOnlyLastEpisodes(state) {
+      return state.isShowOnlyLastEpisodes;
     },
   },
   actions: {
@@ -34,6 +42,9 @@ export const useCalendarStore = defineStore("calendar", {
         this.changedDate.getFullYear(),
         this.changedDate.getMonth() - 1
       );
+    },
+    toggleIsShowOnlyLastEpisodes() {
+      this.isShowOnlyLastEpisodes = !this.isShowOnlyLastEpisodes;
     },
   },
 });
