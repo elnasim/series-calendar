@@ -36,8 +36,13 @@
               class="absolute inset-0 flex items-end p-0.5 bg-gradient-to-t from-color-1 to-transparent"
             >
               <div
-                class="w-11/12 overflow-hidden truncate text-color-5 text-xs"
+                class="flex items-center overflow-hidden truncate text-color-5 text-xs rounded-md pl-1 pr-1"
               >
+                <span
+                  v-if="item.serial.imdb && item.serial.imdb > 0"
+                  class="w-1.5 h-1.5 rounded-full inline-block mr-1"
+                  :class="bgTitleColorByRating(item.serial.imdb)"
+                ></span>
                 {{ item.serial?.title }}
               </div>
             </div>
@@ -96,4 +101,28 @@ const isCurrentDay = computed(() => {
     props.month === date.getMonth()
   );
 });
+
+const bgTitleColorByRating = (rating: number) => {
+  if (rating < 2) {
+    return "bg-rating-1";
+  }
+  if (rating < 4) {
+    return "bg-rating-2";
+  }
+  if (rating < 6) {
+    return "bg-rating-3";
+  }
+  if (rating < 7) {
+    return "bg-rating-4";
+  }
+  if (rating < 8) {
+    return "bg-rating-5";
+  }
+  if (rating < 9) {
+    return "bg-rating-6";
+  }
+  if (rating <= 10) {
+    return "bg-rating-7";
+  }
+};
 </script>

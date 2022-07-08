@@ -11,27 +11,6 @@ export interface IDayInfo {
   dayIndex: number;
 }
 
-export interface IContentItem {
-  id: number;
-  title: string;
-  img: string;
-}
-
-export interface ISerial {
-  id: number;
-  title: string;
-  img: string;
-  episodes?: ISerialEpisode[];
-}
-
-export interface ISerialEpisode {
-  id?: number;
-  title: string;
-  day: number;
-  month: MonthsEnum;
-  year: number;
-}
-
 export interface ISerialEpisodeWithSerialInfo {
   id: number;
   title: string;
@@ -44,6 +23,8 @@ export interface ISerialEpisodeWithSerialInfo {
     id: number;
     title: string;
     img: string;
+    imdb: number;
+    kinopoisk: number;
   };
 }
 
