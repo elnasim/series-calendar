@@ -5,7 +5,8 @@
       v-if="props.dayData"
     >
       <div
-        class="absolute top-1 left-1 w-5 h-5 bg-color-1 text-color-4 rounded-full flex justify-center items-center text-xs font-bold z-[1]"
+        :class="isCurrentDay && `bg-red`"
+        class="absolute top-1 left-1 w-5 h-5 bg-color-1 text-color-5 rounded-full flex justify-center items-center text-xs font-bold z-[1]"
       >
         {{ props.dayData?.dayInfo.dayIndex }}
       </div>
@@ -21,7 +22,7 @@
           v-for="item of dayDataWithoutRepeatedSerial"
           :key="item.id"
           class="w-full h-full bg-cover bg-repeat flex items-end p-1 relative mb-0.5 last:mb-0"
-          :style="`background-image: url(${item.serial?.img});`"
+          :style="`background-image: url('${item.serial?.img}');`"
         >
           <div
             class="absolute inset-0 flex items-end p-0.5 bg-gradient-to-t from-color-1 to-transparent"
@@ -43,6 +44,7 @@ import { ISerialEpisodeWithSerialInfo, TDay } from "../types";
 // eslint-disable-next-line no-undef
 const props = defineProps<{
   dayData: TDay;
+  month: number;
 }>();
 
 const cellsSize = () => {
@@ -64,5 +66,13 @@ const dayDataWithoutRepeatedSerial = computed(() => {
   }
 
   return null;
+});
+
+const isCurrentDay = computed(() => {
+  const date = new Date();
+  return (
+    props.dayData?.dayInfo.dayIndex === date.getDate() &&
+    props.month === date.getMonth()
+  );
 });
 </script>

@@ -25,6 +25,7 @@
             v-for="(day, index) of week"
             :key="index"
             :dayData="day"
+            :month="month"
           />
         </tr>
       </tbody>
