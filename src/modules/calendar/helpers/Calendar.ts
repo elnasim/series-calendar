@@ -5,18 +5,18 @@ class Calendar {
 
   public getMonthByIndex(monthIndex: MonthsEnum): string {
     const monthByIndex = [
-      "January",
-      "February",
-      "March",
-      "April",
-      "May",
-      "June",
-      "July",
-      "August",
-      "September",
-      "October",
-      "November",
-      "December",
+      "Январь",
+      "Февраль",
+      "Март",
+      "Апрель",
+      "Май",
+      "Июнь",
+      "Июль",
+      "Август",
+      "Сентябрь",
+      "Октябрь",
+      "Ноябрь",
+      "Декабрь",
     ];
 
     return monthByIndex[monthIndex];

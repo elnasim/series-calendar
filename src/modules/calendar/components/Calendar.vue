@@ -11,6 +11,13 @@
       }}
     </button>
 
+    <button
+      @click="setCurrentUserDate"
+      class="mx-auto max-w-[260px] w-full bg-color-4 rounded-md mb-4"
+    >
+      На сегодня
+    </button>
+
     <CalendarControl
       :month="month"
       :year="year"
@@ -54,14 +61,20 @@ import { useCalendarStore } from "../store/Calendar";
 import { storeToRefs } from "pinia";
 import axios from "axios";
 import { ISerialEpisodeWithSerialInfo } from "@/modules/calendar/types";
+import calendarService from "../services/CalendarService";
 
 // Store
 const calendarStore = useCalendarStore();
-const { setNextMonth, setPrevMonth, toggleIsShowOnlyLastEpisodes } =
-  calendarStore;
+const {
+  setNextMonth,
+  setPrevMonth,
+  toggleIsShowOnlyLastEpisodes,
+  setCurrentUserDate,
+} = calendarStore;
 
 const { getChangedDate, getIsShowOnlyLastEpisodes } =
   storeToRefs(calendarStore);
+// End Store
 
 const serialsData = ref<ISerialEpisodeWithSerialInfo[]>([]);
 
@@ -79,7 +92,6 @@ const year = computed((): number => {
   return date.getFullYear();
 });
 
-// Mounted
 onMounted(async () => {
   await fetchCalendarData();
 });
@@ -91,12 +103,10 @@ watch(month, async () => {
 
 const fetchCalendarData = async () => {
   try {
-    const { data } = await axios(
-      `${process.env.VUE_APP_API_URL}/api/episodes/${year.value}/${
-        month.value + 1
-      }`
+    serialsData.value = await calendarService.getSerialsByMonthAndYear(
+      month.value,
+      year.value
     );
-    serialsData.value = data.episodes;
   } catch (error) {
     console.log("-->", error);
   }

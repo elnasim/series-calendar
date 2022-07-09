@@ -55,7 +55,7 @@
 
 <script lang="ts" setup>
 import { computed } from "vue";
-import { TDay } from "../types";
+import { TDay } from "@/modules/calendar/types";
 
 // eslint-disable-next-line no-undef
 const props = defineProps<{
@@ -73,7 +73,7 @@ const cellsSize = () => {
 };
 
 const dayDataWithoutRepeatedSerial = computed(() => {
-  // Продумать фильтрацию. Сейчас могут появиться 2 серии одного сериала, если одна из серий завершает сезон
+  // TODO Продумать фильтрацию. Сейчас могут появиться 2 серии одного сериала, если одна из серий завершает сезон
   const lastEpisodes = props.dayData?.content.filter((item) => {
     return item.is_last_season_episode === 1;
   });
