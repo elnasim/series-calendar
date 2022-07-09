@@ -45,23 +45,30 @@
             :dayData="day"
             :month="month"
             :isShowOnlyLastEpisodes="getIsShowOnlyLastEpisodes"
+            @click="showDayPopup(day)"
           />
         </tr>
       </tbody>
     </table>
   </div>
+
+  <CalendarDayPopup
+    v-if="dayPopupData"
+    :data="dayPopupData"
+    :closeDayPopup="closeDayPopup"
+  />
 </template>
 
 <script lang="ts" setup>
 import { computed, onMounted, ref, watch } from "vue";
-import CalendarCell from "./CalendarCell.vue";
-import calendar from "@/modules/calendar/helpers/Calendar";
-import CalendarControl from "./CalendarControl.vue";
-import { useCalendarStore } from "../store/Calendar";
 import { storeToRefs } from "pinia";
-import axios from "axios";
-import { ISerialEpisodeWithSerialInfo } from "@/modules/calendar/types";
-import calendarService from "../services/CalendarService";
+import { useCalendarStore } from "@/modules/calendar/store/Calendar";
+import calendar from "@/modules/calendar/helpers/Calendar";
+import calendarService from "@/modules/calendar/services/CalendarService";
+import { ISerialEpisodeWithSerialInfo, TDay } from "@/modules/calendar/types";
+import CalendarCell from "@/modules/calendar/components/CalendarCell.vue";
+import CalendarControl from "@/modules/calendar/components/CalendarControl.vue";
+import CalendarDayPopup from "@/modules/calendar/components/CalendarDayPopup.vue";
 
 // Store
 const calendarStore = useCalendarStore();
@@ -77,6 +84,7 @@ const { getChangedDate, getIsShowOnlyLastEpisodes } =
 // End Store
 
 const serialsData = ref<ISerialEpisodeWithSerialInfo[]>([]);
+const dayPopupData = ref<TDay>();
 
 const calendarData = computed(() => {
   return calendar.getCalendar(getChangedDate.value, serialsData.value);
@@ -110,5 +118,14 @@ const fetchCalendarData = async () => {
   } catch (error) {
     console.log("-->", error);
   }
+};
+
+const showDayPopup = (day: TDay) => {
+  if (day?.content.length === 0) return;
+  dayPopupData.value = day;
+};
+
+const closeDayPopup = () => {
+  dayPopupData.value = null;
 };
 </script>

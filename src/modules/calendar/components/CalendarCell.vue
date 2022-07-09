@@ -2,6 +2,7 @@
   <td class="h-36 p-1" :style="cellsSize()">
     <div
       class="w-full h-full relative bg-color-2 rounded-2xl overflow-hidden"
+      :class="props.dayData.content.length > 0 && 'cursor-pointer'"
       v-if="props.dayData"
     >
       <div
@@ -40,7 +41,7 @@
               >
                 <span
                   v-if="item.serial.imdb && item.serial.imdb > 0"
-                  class="w-1.5 h-1.5 rounded-full inline-block mr-1"
+                  class="min-w-[6px] w-1.5 h-1.5 rounded-full inline-block mr-1"
                   :class="bgTitleColorByRating(item.serial.imdb)"
                 ></span>
                 {{ item.serial?.title }}

@@ -1,6 +1,6 @@
 <template>
   <div
-    class="min-h-screen flex items-center justify-center pt-12 pb-12 pl-4 pr-4"
+    class="relative min-h-screen flex items-center justify-center pt-12 pb-12 pl-4 pr-4"
   >
     <Calendar />
   </div>
